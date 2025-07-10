@@ -1,0 +1,279 @@
+package com.customer;
+
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
+
+
+
+public class CustomerDBUtil {
+	
+	private static boolean isSuccess;
+	private static Connection con = null;
+	private static Statement stmt = null;
+	private static ResultSet rs = null;
+	
+	public static boolean insertvehicle(String firstname, String lastname, String username, String password, String repwd) {
+		
+		// Check if any field is empty
+		if (firstname == null || firstname.isEmpty() ||
+		    lastname == null || lastname.isEmpty() ||
+		    username == null || username.isEmpty() ||
+		    password == null || password.isEmpty() ||
+		    repwd == null || repwd.isEmpty()) {
+			System.out.println("All fields must be filled.");
+			return false;
+		}
+
+		// Check if password and re-password match
+		if (!password.equals(repwd)) {
+			System.out.println("Passwords do not match.");
+			return false;
+		}
+
+		try {
+			// Establish database connection
+			con = DBConnect.getConnection();
+			stmt = con.createStatement();
+
+			// Check if username already exists in the database
+			String checkUsernameSql = "SELECT * FROM user WHERE username = '" + username + "'";
+			rs = stmt.executeQuery(checkUsernameSql);
+			
+			if (rs.next()) {
+				System.out.println("Username already exists.");
+				return false;
+			}
+			
+			 // Hash the password using SHA-256
+	        String hashedPassword = hashPassword(password);
+			
+			
+			// If username does not exist, proceed with the insertion
+			String insertSql = "INSERT INTO user VALUES (0, '" + firstname + "', '" + lastname + "', '" + username + "', '" + hashedPassword + "')";
+			int result = stmt.executeUpdate(insertSql);
+
+			// Check if the insert operation was successful
+			isSuccess = (result > 0);
+		} catch (Exception e) {
+			e.printStackTrace();
+			isSuccess = false;
+		} finally {
+			// Close resources (ensure resources are closed properly)
+			try {
+				if (rs != null) rs.close();
+				if (stmt != null) stmt.close();
+				if (con != null) con.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+
+		return isSuccess;
+	}
+	
+	//hash password
+	public static String hashPassword(String password) {
+	    try {
+	        MessageDigest md = MessageDigest.getInstance("SHA-256");
+	        byte[] hashedBytes = md.digest(password.getBytes());
+
+	        // Convert the byte array into a hexadecimal string
+	        StringBuilder sb = new StringBuilder();
+	        for (byte b : hashedBytes) {
+	            sb.append(String.format("%02x", b));
+	        }
+
+	        return sb.toString();
+	    } catch (NoSuchAlgorithmException e) {
+	        e.printStackTrace();
+	        return null;
+	    }
+	}
+
+	//validate login details
+		public static boolean validate(String username,String password) {
+			
+			try {
+				 String hashedPassword = hashPassword(password);
+				
+				//database connection
+				con  = DBConnect.getConnection();
+				stmt = con.createStatement();
+				String sql = "select * from user where username='"+username+"' and password = '"+hashedPassword+"'";
+				rs = stmt.executeQuery(sql);
+				
+				
+				//if rs variable return a row it is true,if not it is false
+				if(rs.next()) {
+					isSuccess = true;
+				}
+				else {
+					isSuccess = false;
+				}
+			}
+			catch(Exception e) {
+				e.printStackTrace();
+			}
+			return isSuccess;//return a boolean value
+		}
+		
+		//get login user details from the database
+		public static List<Customer> getCustomer(String userName) {
+			
+			ArrayList<Customer> customer = new ArrayList<>();
+			
+			try {
+				
+				con = DBConnect.getConnection();
+				stmt = con.createStatement();
+				String sql = "select * from user where username = '"+userName+"'";
+				rs = stmt.executeQuery(sql);
+				
+				while(rs.next()) {
+					
+					int id = rs.getInt(1);
+					String firstName = rs.getString(2);
+					String lastName = rs.getString(3);
+					String username = rs.getString(4);
+					String password = rs.getString(5);
+					
+					
+					Customer cus = new Customer(id,firstName,lastName,username,password);
+					customer.add(cus);
+				}
+			}
+			catch(Exception e) {
+				e.printStackTrace();
+			}
+			
+			return customer;//return a list of values
+		}
+		
+		//insert data to the database(sign up)
+		public static boolean insertCustomer(String firstname,String lastName,String username,String password) {
+			
+			boolean isSuccess = false;
+			
+			try {
+				con = DBConnect.getConnection();
+				stmt = con.createStatement();
+				String sql = "insert into customer values (0,'"+firstname+"','"+lastName+"','"+username+"','"+password+"')";
+				int rs = stmt.executeUpdate(sql);//executeUpdate is used to insert,update,delete , return 0(no value) return 1(value)
+				
+				
+				if(rs > 0 )
+				{
+					isSuccess = true;
+				}
+				else
+				{
+					isSuccess = false;
+				}
+			}
+			catch(Exception e) {
+				e.printStackTrace();
+			}
+			
+			
+			return isSuccess;
+		}
+
+		
+		//update customer
+		
+		public static boolean updateCustomer(String id,String firstname,String lastname,String username,String pwd)
+		{		
+			
+			try
+			{
+				con = DBConnect.getConnection();
+				stmt = con.createStatement();
+				
+				String hashedPassword = hashPassword(pwd);
+				 
+				String sql = "update user set firstName='"+firstname+"',lastName='"+lastname+"',userName='"+username+"',password='"+hashedPassword+"'"
+						+ "where id='"+id+"'";
+				
+				int rs = stmt.executeUpdate(sql);
+				
+				if(rs > 0 ) 
+				{
+					isSuccess = true;
+				}
+				else
+				{
+					isSuccess = false;
+				}
+			}	
+			catch(Exception e)
+			{
+				e.printStackTrace();
+			}
+			return isSuccess;
+		}
+
+		//show customers updated data
+		public static List<Customer> getCustomerDetails(String id){
+			
+			ArrayList<Customer> cus = new ArrayList<>();
+			
+			int convetedid = Integer.parseInt(id);
+			try
+			{
+				con = DBConnect.getConnection();
+				stmt = con.createStatement();
+				String sql = "select * from user where id = '"+convetedid+"'";
+				rs = stmt.executeQuery(sql);
+				
+				while(rs.next())
+				{	
+					int id1 = rs.getInt(1);
+					String firstname = rs.getString(2);
+					String lastname = rs.getString(3);
+					String username = rs.getString(4);
+					String password = rs.getString(5);
+					
+					Customer c1 = new Customer(id1,firstname,lastname,username,password);
+					cus.add(c1);
+				}
+			}
+			catch(Exception e) {
+				e.printStackTrace();
+			}
+			return cus;
+		}
+		
+		//delete customer
+		public static boolean deletCustomer(String id)
+		{	
+			int convertedid  = Integer.parseInt(id);
+			
+			try
+			{
+				con = DBConnect.getConnection();
+				stmt = con.createStatement();
+				String sql = "delete from user where id = '"+convertedid+"'";
+				int rs = stmt.executeUpdate(sql);
+				
+				if(rs > 0 )
+				{
+					isSuccess = true;
+				}
+				else
+				{
+					isSuccess = false;
+				}
+			}
+			catch(Exception e)
+			{
+				e.printStackTrace();
+			}
+			return isSuccess;
+		}
+}

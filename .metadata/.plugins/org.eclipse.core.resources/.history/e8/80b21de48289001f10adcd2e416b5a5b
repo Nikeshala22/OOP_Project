@@ -1,0 +1,42 @@
+package com.customer;
+
+import jakarta.servlet.RequestDispatcher;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
+@WebServlet("/signup")
+public class SignUpServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		
+		
+		
+		String firstname = request.getParameter("firstName");
+		String lastname = request.getParameter("lastName");
+		String username = request.getParameter("username");
+		String pwd = request.getParameter("password");
+		String repwd = request.getParameter("re-password");
+		
+		
+		boolean isTrue = CustomerDBUtil.insertvehicle(firstname,lastname,username, pwd,repwd);
+		
+		if(isTrue == true )
+		{
+			RequestDispatcher dis = request.getRequestDispatcher("login.jsp");
+			dis.forward(request,response);
+		}
+		else
+		{
+			RequestDispatcher dis2 = request.getRequestDispatcher("sinup.jsp");
+			dis2.forward(request,response);
+		}
+	}
+
+}

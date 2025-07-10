@@ -1,0 +1,7 @@
+INDEX VERSION 1.4+C:\Users\acer\Desktop\Online Vehicle Spare Parts System\.metadata\.plugins\org.eclipse.wst.jsdt.core\indexes
+3059995018.index
+886681872.index
+3769990680.index
+2520886101.index
+1856900758.index
+733774690.index

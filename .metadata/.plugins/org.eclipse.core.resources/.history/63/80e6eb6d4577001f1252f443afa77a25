@@ -1,0 +1,37 @@
+package com.customer;
+
+import jakarta.servlet.RequestDispatcher;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.List;
+
+@WebServlet("/UpdateProfileServlet")
+public class UpdateProfileServlet extends HttpServlet {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        int id = Integer.parseInt(request.getParameter("id"));
+        String firstname = request.getParameter("firstname");
+        String lastname = request.getParameter("lastname");
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
+
+        // Call method to update customer in the database
+        boolean isUpdated = CustomerDBUtil.updateCustomer(id, firstname, lastname, username, password);
+
+        if (isUpdated) {
+            // Optionally, update session data
+            request.setAttribute("successMessage", "Profile updated successfully.");
+            // Redirect or forward to user account page
+            RequestDispatcher dis = request.getRequestDispatcher("useraccount.jsp");
+            dis.forward(request, response);
+        } else {
+            request.setAttribute("errorMessage", "Error updating profile.");
+            RequestDispatcher dis = request.getRequestDispatcher("updateprofile.jsp");
+            dis.forward(request, response);
+        }
+    }
+}
+

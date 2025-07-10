@@ -1,0 +1,202 @@
+@charset "UTF-8";
+
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400&display=swap');
+
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+    list-style: none;
+    scroll-behavior: smooth;
+    font-family: 'Lato', sans-serif;
+}
+#navbar {
+  background-color: #343a40;
+  padding: 15px 0;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-nav .nav-link {
+  color: #000000; /* Black text color */
+  margin-right: 15px;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.navbar-nav .nav-link:hover,
+.navbar-nav .nav-link.active {
+  color: #ffc107; /* Yellow color on hover or when active */
+}
+
+
+#logo {
+  color: #ffffff;
+  font-size: 24px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+#logo span {
+  color: #ffc107;
+}
+
+.btn-primary {
+  background-color: #ffc107; /* Button background color */
+  border: none; /* Remove border */
+  color: #000000; /* Black text color */
+  font-weight: 600; /* Bold text */
+}
+ 
+
+
+.btn-primary:hover {
+  background-color: #e0a800; /* Darker yellow on hover */
+  color: #ffffff; /* White text color on hover */
+}
+
+
+.navbar-toggler {
+  border-color: #ffffff;
+}
+
+.navbar-toggler-icon {
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='%23ffffff' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+  /* White lines for the toggle icon */
+}
+
+
+.navbar {
+  min-height: 60px;
+}
+
+.container {
+  width: 100%;
+  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding-top: 20px; /* Adjust this value as needed */
+  padding-bottom: 20px; /* Adjust this value as needed */
+  margin: 10 auto; /* Center the container */
+  height: auto; /* Adjust the height to fit the content */
+  margin: 50;
+}
+
+
+
+
+.wrapper{
+    font-family: 'poppins',sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background: #cbdaec;
+}
+.wrapper h1{
+    font-size: 3em;
+    
+    margin: 25px;
+}
+h1{
+  font-family:Arial, Helvetica, sans-serif;
+  font-weight: bold;
+  
+  color: #6b6868;
+}
+.content-box{
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    width: 1000px;
+    margin-top: 30px;
+}
+.card{
+    min-height: 220px;
+    width: 320px;
+    padding: 30px;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background: #fff;
+    margin: 10px 4px;
+    box-shadow: 0px 15px 30px rgba(0,0,0,0.2);
+}
+.card i{
+    margin: 20px;
+    color: #581ed6;
+}
+.card h2{
+    margin-bottom: 12px;
+    font-weight: 400;
+    text-align: center;
+}
+.card p{
+    color: #6c757d;
+    text-align: center;
+}
+.card:hover i,
+.card:hover p{
+    color: #fff;
+}
+.card:hover h2{
+    font-weight: 600;
+}
+.card:nth-child(1):hover{
+    background: linear-gradient(45deg,
+                                   rgba(235, 146, 236, 0.7) 0% ,
+                                   rgba(136, 113, 199, 0.7)100% );
+                                    background-size: cover;
+}
+.card:nth-child(2):hover{
+    background: linear-gradient(45deg,
+                                   rgba(98, 202, 225, 0.7) 0% ,
+                                   rgba(136, 113, 199, 0.7)100% ) ;
+                                    background-size: cover;
+}
+.card:nth-child(3):hover{
+    background: linear-gradient(45deg,
+                                   rgba(234, 120, 209, 0.7) 0% ,
+                                   rgba(136, 113, 199, 0.7)100% ) ;
+                                    background-size: cover;
+}
+.card:nth-child(4):hover{
+    background: linear-gradient(45deg,
+                                   rgba(232, 95, 95, 0.7) 0% ,
+                                   rgba(136, 113, 199, 0.7)100% ) ;
+                                    background-size: cover;
+}
+.card:nth-child(5):hover{
+    background: linear-gradient(45deg,
+                                   rgba(231, 84, 143, 0.7) 0% ,
+                                   rgba(136, 113, 199, 0.7)100% ) ;
+                                    background-size: cover;
+}
+.card:nth-child(6):hover{
+    background: linear-gradient(45deg,
+                                   rgba(101, 224, 112, 0.7) 0% ,
+                                   rgba(136, 113, 199, 0.7)100% ) ;
+                                    background-size: cover;
+}
+@media(max-width:991px){
+    .wrapper{
+        padding: 25px;
+    }
+    .wrapper h1{
+        font-size: 2.5em;
+        font-weight: 600;
+    }
+    .content-box{
+        flex-direction: column;
+        width: 100%;
+    }
+    .card{
+        min-width: 300px;
+        margin: 10px auto;
+    }
+}

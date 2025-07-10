@@ -1,0 +1,177 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Signup</title>
+
+<link rel="stylesheet" href="styles/singup.css">
+
+<!-- Bootstrap Link -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+<!-- Font Awesome Cdn -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
+<!-- Font Awesome Cdn -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
+
+<!-- Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap" rel="stylesheet">
+<!-- Google Fonts -->
+
+<style>
+    .custom-button {
+        background-color: orange;
+        border: none;
+        color: black;
+        font-weight: bold;
+        transition: color 0.3s ease;
+    }
+
+    .custom-button:hover {
+        color: white;
+    }
+
+    .error-messages {
+        color: red;
+        margin-bottom: 20px;
+    }
+    .field {
+            position: relative;
+            margin-bottom: 15px; /* Space between fields */
+        }
+
+        .eye-icon {
+            position: absolute;
+            right: 10px; /* Adjust as needed */
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer; /* Change cursor to pointer on hover */
+            color: #000; /* Change color if necessary */
+        }
+    
+    
+</style>
+
+</head>
+<body>
+<!-- Navbar Start -->
+<nav class="navbar navbar-expand-lg" id="navbar">
+    <div class="container">
+        <a class="navbar-brand" href="index.html" id="logo"><span>Parts</span>Universe</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
+            <span><i class="fa-solid fa-bars"></i></span>
+        </button>
+        <div class="collapse navbar-collapse" id="mynavbar">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                    <a class="nav-link" id="home-link" href="index.jsp">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="login-link" href="login.jsp">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="signup-link" href="sinup.jsp">Signup</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="profile-link" href="useraccount.jsp">Profile</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="packages-link" href="aboutus.jsp">About Us</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="services-link" href="faq.jsp">FAQ</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="gallery-link" href="privacy.jsp">Privacy Policy</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="about-link" href="contact.jsp">Contact Us</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="about-link" href="terms.jsp">T&C</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<!-- Navbar End -->
+
+<section class="container forms">
+    <div class="form signup">
+        <div class="form content">
+            <header>Sign Up</header>
+
+            <form action="signup" method="post">
+
+                <div class="error-messages">
+                    <c:if test="${not empty errors}">
+                        <ul>
+                            <c:forEach var="error" items="${errors}">
+                                <li>${error}</li>
+                            </c:forEach>
+                        </ul>
+                    </c:if>
+                </div>
+
+                <div class="field input-field">
+                    <input type="text" placeholder="First Name" class="input" name="firstName" value="${param.firstName}">
+                </div>
+
+                <div class="field input-field">
+                    <input type="text" placeholder="Last Name" class="input" name="lastName" value="${param.lastName}">
+                </div>
+
+                <div class="field input-field">
+                    <input type="text" placeholder="User Name" class="input" name="username" value="${param.username}">
+                </div>
+
+                <div class="field input-field">
+                    <input type="password" placeholder="Password" class="password" name="password">
+                    <i class="fa-solid fa-eye eye-icon"></i>
+                </div>
+
+                <div class="field input-field">
+                    <input type="password" placeholder="Re-enter Password" class="password" name="re-password">
+                     <i class="fa-solid fa-eye eye-icon"></i>
+                </div>
+
+                <div class="field button-field">
+                    <button name="submit" class="custom-button">Sign Up</button>
+                </div>
+
+            </form>
+
+            <div class="form link">
+                <span>Already Have an Account? <a href="login.jsp" class="link login-link">Login</a></span>
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const pwShowHide = document.querySelectorAll(".eye-icon");
+
+            pwShowHide.forEach(eyeIcon => {
+                eyeIcon.addEventListener("click", () => {
+                    let pwField = eyeIcon.previousElementSibling; // Get the input field before the icon
+
+                    if (pwField.type === "password") {
+                        pwField.type = "text"; // Change type to text
+                        eyeIcon.classList.replace("fa-eye", "fa-eye-slash"); // Change icon to eye-slash
+                    } else {
+                        pwField.type = "password"; // Change type back to password
+                        eyeIcon.classList.replace("fa-eye-slash", "fa-eye"); // Change icon back to eye
+                    }
+                });
+            });
+        });
+    </script>
+<script src="script/signup.js"></script>
+<script src="script/index.js"></script>
+</body>
+</html>

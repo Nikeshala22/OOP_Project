@@ -1,0 +1,90 @@
+package com.customer;
+
+import jakarta.servlet.RequestDispatcher; 
+
+import jakarta.servlet.ServletException; 
+import jakarta.servlet.annotation.WebServlet; 
+import jakarta.servlet.http.HttpServlet; 
+import jakarta.servlet.http.HttpServletRequest; 
+import jakarta.servlet.http.HttpServletResponse; 
+
+import java.io.IOException; 
+import java.util.ArrayList; 
+import java.util.List; 
+
+@WebServlet("/signup") // Define servlet mapping for the signup operation
+public class SignUpServlet extends HttpServlet {
+    private static final long serialVersionUID = 1L; // Unique identifier for this servlet
+
+    // Override the doPost method to handle POST requests for user signup
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // Retrieve user input from the signup form
+        String firstname = request.getParameter("firstName");
+        String lastname = request.getParameter("lastName");
+        String username = request.getParameter("username");
+        String pwd = request.getParameter("password");
+        String repwd = request.getParameter("re-password");
+
+        // Initialize a list to hold error messages
+        List<String> errors = new ArrayList<>();
+
+        // Validate first name
+        if (firstname == null || firstname.trim().isEmpty()) {
+            errors.add("First name is required."); 
+        }
+
+        // Validate last name
+        if (lastname == null || lastname.trim().isEmpty()) {
+            errors.add("Last name is required."); 
+        }
+
+        // Validate username
+        if (username == null || username.trim().isEmpty()) {
+            errors.add("Username is required.");
+        } else if (isUsernameTaken(username)) { 
+            errors.add("Username is already taken. Please choose another one."); 
+        }
+
+        // Validate password
+        if (pwd == null || pwd.isEmpty()) {
+            errors.add("Password is required."); 
+        } else if (pwd.length() < 8 || !pwd.matches("^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[@$!%*?&]).+$")) {
+            
+            errors.add("Password must be at least 8 characters long, include at least one uppercase letter, one lowercase letter, one number, and one special character.");
+        }
+
+        // Validate confirm password
+        if (repwd == null || repwd.isEmpty()) {
+            errors.add("Please confirm your password."); 
+        } else if (!pwd.equals(repwd)) {
+            errors.add("Passwords do not match."); 
+        }
+
+        // If there are errors, set them as an attribute and forward back to the signup page
+        if (!errors.isEmpty()) {
+            request.setAttribute("errors", errors); 
+            RequestDispatcher dis = request.getRequestDispatcher("sinup.jsp"); 
+            dis.forward(request, response); 
+            return; 
+        }
+
+        // Proceed to insert user data into the database
+        boolean isTrue = CustomerDBUtil.insertcustomer(firstname, lastname, username, pwd, repwd);
+
+        if (isTrue) {
+            
+            RequestDispatcher dis = request.getRequestDispatcher("login.jsp");
+            dis.forward(request, response); // Forward to login page
+        } else {
+            
+            RequestDispatcher dis2 = request.getRequestDispatcher("sinup.jsp"); 
+            dis2.forward(request, response); 
+        }
+    }
+
+    // Method to check if the username is already taken
+    private boolean isUsernameTaken(String username) {
+       
+        return false; 
+    }
+}

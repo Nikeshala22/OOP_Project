@@ -1,0 +1,173 @@
+@charset "UTF-8";
+
+
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+    list-style: none;
+    scroll-behavior: smooth;
+    font-family: 'Lato', sans-serif;
+}
+#navbar {
+  background-color: #343a40;
+  padding: 15px 0;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-nav .nav-link {
+  color: #000000; /* Black text color */
+  margin-right: 15px;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.navbar-nav .nav-link:hover,
+.navbar-nav .nav-link.active {
+  color: #ffc107; /* Yellow color on hover or when active */
+}
+
+
+#logo {
+  color: #ffffff;
+  font-size: 24px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+#logo span {
+  color: #ffc107;
+}
+
+.btn-primary {
+  background-color: #ffc107; /* Button background color */
+  border: none; /* Remove border */
+  color: #000000; /* Black text color */
+  font-weight: 600; /* Bold text */
+}
+ 
+
+
+.btn-primary:hover {
+  background-color: #e0a800; /* Darker yellow on hover */
+  color: #ffffff; /* White text color on hover */
+}
+
+
+.navbar-toggler {
+  border-color: #ffffff;
+}
+
+.navbar-toggler-icon {
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='%23ffffff' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+  /* White lines for the toggle icon */
+}
+
+
+.navbar {
+  min-height: 60px;
+}
+
+.container {
+  width: 100%;
+  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding-top: 20px; /* Adjust this value as needed */
+  padding-bottom: 20px; /* Adjust this value as needed */
+  margin: 10 auto; /* Center the container */
+  height: auto; /* Adjust the height to fit the content */
+  margin: 50;
+}
+
+
+.form
+{
+  max-width:430px;
+  width:100%;
+  padding:30px;
+  border-radius:6px;
+  background-color:  rgb(221, 221, 233);
+}
+
+.container header{
+  font-size:28px;
+  font-weight:600;
+  color:#232836;
+  text-align:center;
+}
+form{
+  margin-top:30px;
+}
+.form .field
+{
+  position: relative;
+  height:50px;
+  width:100%;
+  margin-top:20px;
+  border-radius:6px;
+}
+.field input,
+.field button
+{
+  height:100%;
+  width:100%;
+  border:none;
+  font-size:16px;
+  font-weight:400;
+  border-radius:6px;
+}
+.field input
+{
+  outline:none;
+  padding:0 15px;
+  border:1px solid #cacaca;
+  
+}
+.field input:focus{
+  border-bottom-width:2px;
+}
+
+.eye-icon
+{
+  position:absolute;
+  top:50%;
+  right:10px;
+  transform:translateY(-50%);
+  font-size:18px;
+  color:#8b8b8b;
+  cursor:pointer;
+  padding:5px;
+}
+.field button{
+  color:#fff;
+  background-color: #0171d3;
+  transition:all 0.3s ease;
+  cursor:pointer;
+}
+.field button:hover{
+  
+  background-color: #016dcb;
+}
+.form link{
+  text-align:center;
+  margin-top:10px;
+}
+.form link span,
+.form link a{
+  font-size:14px;
+  font-weight:400;
+  color:#232836;
+}
+
+.form a{
+  color:#0171d3;
+  text-decoration: none;
+}
+.form-content a:hover{
+  text-decoration:underline;
+}

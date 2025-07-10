@@ -1,0 +1,43 @@
+package com.customer;
+
+import jakarta.servlet.RequestDispatcher;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.List;
+
+@WebServlet("/update")
+public class UpdateProfileServlet extends HttpServlet {
+    private static final long serialVersionUID = 1L;
+
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String id = request.getParameter("cusid");
+        String firstname = request.getParameter("firstname");
+        String lastname = request.getParameter("lastname");
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
+        
+        boolean isTrue = CustomerDBUtil.updateCustomer(id, firstname, lastname, username, password);
+        
+        if (isTrue) {
+            // Get updated customer details
+            List<Customer> cusDetails = CustomerDBUtil.getCustomerDetails(id);
+            request.setAttribute("cusDetails", cusDetails);
+
+            // Optionally, you might want to store the updated customer in the session
+            request.getSession().setAttribute("user", cusDetails.get(0)); // Assuming the first entry is the user
+
+            // Redirect to useraccount.jsp instead of login.jsp
+            RequestDispatcher dis = request.getRequestDispatcher("useraccount.jsp");
+            dis.forward(request, response);
+        } else {
+            // Handle the case where the update failed
+            request.setAttribute("errorMessage", "Update failed. Please try again.");
+            RequestDispatcher dis2 = request.getRequestDispatcher("login.jsp");
+            dis2.forward(request, response);
+        }
+    }
+}

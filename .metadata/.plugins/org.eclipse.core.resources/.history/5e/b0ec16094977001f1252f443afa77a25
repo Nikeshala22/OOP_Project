@@ -1,0 +1,50 @@
+package com.customer;
+
+import jakarta.servlet.RequestDispatcher;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.List;
+
+@WebServlet("/update")
+public class UpdateProfileServlet extends HttpServlet {
+    private static final long serialVersionUID = 1L;
+
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String id = request.getParameter("cusid");
+        String firstname = request.getParameter("firstname");
+        String lastname = request.getParameter("lastname");
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
+        
+        // Hash the new password using SHA-256
+        String hashedPassword = hashPassword(password); // Ensure this method is defined in your utility
+
+        boolean isTrue = CustomerDBUtil.updateCustomer(id, firstname, lastname, username, hashedPassword);
+        
+        if (isTrue) {
+            // Get updated customer details
+            List<Customer> cusDetails = CustomerDBUtil.getCustomerDetails(id);
+            request.setAttribute("cusDetails", cusDetails);
+
+            // Store updated customer in session
+            request.getSession().setAttribute("user", cusDetails.get(0));
+
+            // Redirect to useraccount.jsp
+            RequestDispatcher dis = request.getRequestDispatcher("login.jsp");
+            dis.forward(request, response);
+        } else {
+            request.setAttribute("errorMessage", "Update failed. Please try again.");
+            RequestDispatcher dis2 = request.getRequestDispatcher("updateprofile.jsp");
+            dis2.forward(request, response);
+        }
+    }
+
+    private String hashPassword(String password) {
+        // Implement your password hashing logic here (e.g., SHA-256)
+        // Return the hashed password
+    }
+}
